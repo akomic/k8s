@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    name: webfront
+  name: webfront
+spec:
+  replicas: 1
+  selector:
+    name: webfront
+  template:
+    metadata:
+      labels:
+        name: webfront
+    spec:
+      containers:
+      - name: webfront
+        image: gcr.io/<GCE_PROJECT>/k8s-webfront:v7
+        ports:
+          - name: http
+            containerPort: 80
+          - name: https
+            containerPort: 443
+        env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
